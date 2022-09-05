@@ -1,47 +1,55 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strnstr.c                                       :+:      :+:    :+:   */
+/*   ft_itoa.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: srijal <srijal@student.42urduliz.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/08/30 16:52:45 by srijal            #+#    #+#             */
-/*   Updated: 2022/09/02 17:23:50 by srijal           ###   ########.fr       */
+/*   Created: 2022/09/03 22:43:28 by srijal            #+#    #+#             */
+/*   Updated: 2022/09/03 22:43:44 by srijal           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-int	isfound(const char *s1, const char *s2, size_t n, size_t n_max)
+static int	get_size(long int n)
 {
-	size_t	i;
+	int	i;
 
 	i = 0;
-	while (s2[i] != '\0')
-	{
-		if (s2[i] != s1[i] || n >= n_max)
-			return (0);
+	if (n <= 0)
 		i++;
-		n++;
-	}
-	return (1);
+	while (n != 0)
+	{
+		n /= 10;
+		i++;
+	}	
+	return (i);
 }
 
-char	*ft_strnstr(const char *s1, const char *s2, size_t n)
+char	*ft_itoa(int n)
 {
-	size_t	i;
+	int			size;
+	char		*str;
+	long int	nbr;
 
-	i = 0;
-	if (!s1 && !s2)
+	nbr = (long int) n;
+	size = get_size(nbr);
+	str = malloc((1 + size) * sizeof(char));
+	if (!str)
 		return (0);
-	if (s2[i] == '\0')
-		return ((char *)s1);
-	while (s1[i] != '\0' && i < n)
+	if (nbr < 0)
 	{
-		if (s1[i] == s2[0])
-			if (isfound(&s1[i], s2, i, n))
-				return ((char *)&s1[i]);
-		i++;
+		str[0] = '-';
+		nbr *= -1;
 	}
-	return (0);
+	else if (nbr == 0)
+		str[0] = '0';
+	str[size] = '\0';
+	while (nbr > 0)
+	{
+		str[--size] = (nbr - ((nbr / 10) * 10)) + '0';
+		nbr /= 10;
+	}
+	return (str);
 }

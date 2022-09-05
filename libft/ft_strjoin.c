@@ -1,47 +1,42 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strnstr.c                                       :+:      :+:    :+:   */
+/*   ft_strjoin.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: srijal <srijal@student.42urduliz.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/08/30 16:52:45 by srijal            #+#    #+#             */
-/*   Updated: 2022/09/02 17:23:50 by srijal           ###   ########.fr       */
+/*   Created: 2022/09/03 22:38:05 by srijal            #+#    #+#             */
+/*   Updated: 2022/09/03 22:38:24 by srijal           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-int	isfound(const char *s1, const char *s2, size_t n, size_t n_max)
+char	*ft_strjoin(char const *s1, char const *s2)
 {
+	char	*str;
+	size_t	s1_len;
+	size_t	s2_len;
 	size_t	i;
 
-	i = 0;
-	while (s2[i] != '\0')
-	{
-		if (s2[i] != s1[i] || n >= n_max)
-			return (0);
-		i++;
-		n++;
-	}
-	return (1);
-}
-
-char	*ft_strnstr(const char *s1, const char *s2, size_t n)
-{
-	size_t	i;
-
-	i = 0;
-	if (!s1 && !s2)
+	if (!s1 || !s2)
 		return (0);
-	if (s2[i] == '\0')
-		return ((char *)s1);
-	while (s1[i] != '\0' && i < n)
+	s1_len = ft_strlen(s1);
+	s2_len = ft_strlen(s2);
+	str = malloc((s1_len + s2_len + 1) * sizeof(char));
+	if (str == NULL)
+		return (0);
+	i = 0;
+	while (i < s1_len)
 	{
-		if (s1[i] == s2[0])
-			if (isfound(&s1[i], s2, i, n))
-				return ((char *)&s1[i]);
+		str[i] = s1[i];
 		i++;
 	}
-	return (0);
+	while ((i - s1_len) < s2_len)
+	{
+		str[i] = s2[i - s1_len];
+		i++;
+	}
+	str[i] = '\0';
+	return (str);
 }
